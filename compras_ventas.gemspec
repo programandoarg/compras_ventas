@@ -1,14 +1,14 @@
 Gem::Specification.new do |s|
-  s.name        = 'lib_sample'
+  s.name        = 'compras_ventas'
   s.version     = '0.0.1'
   s.date        = '2010-04-28'
-  s.summary     = "lib_sample"
+  s.summary     = "compras_ventas"
   s.description = "A simple hello world gem"
   s.authors     = ["Martín Rosso"]
   s.email       = 'mrosso10@gmail.com'
-  s.files       = ["lib/lib_sample.rb", "lib/lib_sample/saludador.rb"]
+  s.files       = ["lib/compras_ventas.rb", "lib/compras_ventas/saludador.rb"]
   s.homepage    =
-    'http://rubygems.org/gems/lib_sample'
+    'http://rubygems.org/gems/compras_ventas'
   s.license       = 'MIT'
 
   s.add_development_dependency "rspec"

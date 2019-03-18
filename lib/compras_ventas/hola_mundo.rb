@@ -1,4 +1,4 @@
-module LibSample
+module ComprasVentas
   class HolaMundo
     def saludar
       "HOLAA"

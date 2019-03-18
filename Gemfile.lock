@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lib_sample (0.0.1)
+    compras_ventas (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -41,7 +41,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  lib_sample!
+  compras_ventas!
   rspec
   spring
   spring-commands-rspec
