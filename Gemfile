@@ -17,4 +17,5 @@ gemspec
 group :development do
   gem 'spring'
   gem 'spring-commands-rspec'
+  gem 'pry-byebug'
 end 
