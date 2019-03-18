@@ -17,7 +17,7 @@ module ComprasVentas
       :despacho_importacion,
       :doc_tipo,
       :doc_nro,
-      :nombre,
+      :nombre_o_razon_social,
       :total,
       :fe_imp_tot_conc,
       :fe_imp_op_ex,

@@ -9,7 +9,7 @@ module ComprasVentas
       :numero,
       :doc_tipo,
       :doc_nro,
-      :nombre,
+      :nombre_o_razon_social,
       :total,
       :fe_imp_tot_conc,
       :perc_a_no_categorizados,
@@ -27,7 +27,7 @@ module ComprasVentas
       ]
     end
 
-    def lineas_alicuotas
+    def campos_alicuotas
       [
         :tipo_cbte,
         :punto_de_venta,
@@ -38,22 +38,6 @@ module ComprasVentas
         :tipo_alicuota,
         :importe_alicuota,
       ]
-      lines = []
-
-      # Sólo tienen alicuotas los comprobantes tipo A
-      return lines unless [1, 3].include?(tipo_cbte)
-      
-      alicuotas.each do |id_alicuota, alicuota|
-        output = ''
-        output << tipo_cbte
-        output << punto_de_venta
-        output << numero
-        output << npad(alicuota[:base_imponible], 15)
-        output << pad(id, 4)
-        output << npad(alicuota[:importe], 15)
-        lines << output
-      end
-      lines
     end
 
 

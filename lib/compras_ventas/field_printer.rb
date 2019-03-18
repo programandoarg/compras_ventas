@@ -26,7 +26,7 @@ module ComprasVentas
     end
 
     def doc_tipo
-      pad(@comprobante.doc_tipo, 2)
+      pad(@comprobante.doc_tipo || inferir_doc_tipo, 2)
     end
 
     def doc_nro
@@ -34,29 +34,45 @@ module ComprasVentas
     end
 
     def moneda
-      'PES'
+      if @comprobante.moneda == :dolares
+        'DOL'
+      else
+        'PES'
+      end
     end
 
     def tipo_cambio
-      '0001000000'
+      npad(@comprobante.moneda_cotizacion, 10, 6)
     end
 
     def fecha_venc_pago
       '00000000'
     end
 
+    def base_imponible_alicuota
+      npad(@alicuota[:base_imponible], 15)
+    end
+
+    def importe_alicuota
+      npad(@alicuota[:importe], 15)
+    end
+
+    def tipo_alicuota
+      npad(@alicuota[:tipo_alicuota], 15)
+    end
+
     # Compras
 
     def tipo_cbte
-      pad(Compra.detalle_tipos[@comprobante.tipo_cbte][:tipo_afip], 3)
+      pad(Comprobante.detalle_tipos[@comprobante.tipo_cbte][:tipo_afip], 3)
     end
 
     def despacho_importacion
       '                '
     end
 
-    def nombre
-      lpad(Ascii.process(@comprobante.provider.nombre), 30).upcase
+    def nombre_o_razon_social
+      lpad(Ascii.process(@comprobante.nombre_o_razon_social), 30).upcase
     end
 
     def total
@@ -92,30 +108,19 @@ module ComprasVentas
     end
 
     def cant_alicuotas
-      if @comprobante.tipo_cbte == "factura_a"
-        count = @comprobante.alicuotas.count
-        return '1' unless count > 0
-        count.to_s
-      else
-        '0'
-      end
+      @comprobante.alicuotas.count.to_s
     end
 
     def cod_operacion
-      count = @comprobante.alicuotas.count
-      return '0' if count > 0
+      # count = @comprobante.alicuotas.count
+      return '0' if calcular_credito_fiscal > 0
       return 'E' if (@comprobante.exento || 0) > 0
       return 'N' if (@comprobante.no_gravado || 0) > 0
       '0'
     end
 
     def credito_fiscal_computable
-      npad(
-        (@comprobante.gravado_21 || 0) * 0.21 +
-        (@comprobante.gravado_105 || 0) * 0.105 +
-        (@comprobante.gravado_5 || 0) * 0.05 +
-        (@comprobante.gravado_27 || 0) * 0.27 \
-      , 15)
+      npad(calcular_credito_fiscal, 15)
     end
 
     def otros_tributos
@@ -136,17 +141,17 @@ module ComprasVentas
 
     # Ventas
 
-    def tipo_cbte
-      pad(@comprobante.tipo_cbte, 3)
-    end
+    # def tipo_cbte
+    #   pad(@comprobante.tipo_cbte, 3)
+    # end
 
-    def nombre
-      lpad(Ascii.process(@comprobante.cliente), 30).upcase
-    end
+    # def nombre_o_razon_social
+    #   lpad(Ascii.process(@comprobante.nombre_o_razon_social), 30).upcase
+    # end
 
-    def total
-      npad(@comprobante.total, 15)
-    end
+    # def total
+    #   npad(@comprobante.total, 15)
+    # end
 
     def fe_imp_tot_conc
       npad(@comprobante.fe_imp_tot_conc, 15)
@@ -156,9 +161,9 @@ module ComprasVentas
       npad(0, 15)
     end
 
-    def fe_imp_op_ex
-      npad(@comprobante.fe_imp_op_ex, 15)
-    end
+    # def fe_imp_op_ex
+    #   npad(@comprobante.fe_imp_op_ex, 15)
+    # end
 
     def impuestos_nacionales
       npad(0, 15)
@@ -176,14 +181,28 @@ module ComprasVentas
       npad(0, 15)
     end
 
-    def cant_alicuotas
-      count = @comprobante.alicuotas.count
-      return '1' unless count > 0
-      count.to_s
-    end
+    # def cant_alicuotas
+    #   count = @comprobante.alicuotas.count
+    #   return '1' unless count > 0
+    #   count.to_s
+    # end
 
     def otros_tributos
       '000000000000000'
     end
+
+    private
+
+      def calcular_credito_fiscal
+        (@comprobante.gravado_21 || 0) * 0.21 +
+        (@comprobante.gravado_105 || 0) * 0.105 +
+        (@comprobante.gravado_5 || 0) * 0.05 +
+        (@comprobante.gravado_27 || 0) * 0.27
+      end
+
+      def inferir_doc_tipo
+        return 99 if @comprobante.doc_nro.blank?
+        raise 'doc_tipo no puede estar en blanco'
+      end
   end
 end

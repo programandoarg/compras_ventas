@@ -10,13 +10,13 @@ module ComprasVentas
       value.to_s.rjust(length, '0')
     end
 
-    def npad(value, length)
-      pad(number_with_precision(value, delimiter: "", separator: "", precision: 2), length)
+    def npad(value, length, precision = 2)
+      pad(number_with_precision(value, delimiter: "", separator: "", precision: precision), length)
     end
 
-    def cnpad(value, length)
-      pad(number_with_precision(value, delimiter: "", separator: ",", precision: 2), length)
-    end
+    # def cnpad(value, length)
+    #   pad(number_with_precision(value, delimiter: "", separator: ",", precision: 2), length)
+    # end
 
     def space(number = 1)
       ' ' * number

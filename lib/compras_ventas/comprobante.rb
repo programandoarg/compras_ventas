@@ -14,12 +14,12 @@ module ComprasVentas
 
       def detalle_tipos
         {
-          'factura_a' => { tipo_afip: 1 },
-          'factura_b' => { tipo_afip: 6 },
-          'factura_c' => { tipo_afip: 11 },
-          'nota_de_credito_a' => { tipo_afip: 3  },
-          'nota_de_credito_b' => { tipo_afip: 8  },
-          'nota_de_credito_c' => { tipo_afip: 13 },
+          :factura_a => { tipo_afip: 1 },
+          :factura_b => { tipo_afip: 6 },
+          :factura_c => { tipo_afip: 11 },
+          :nota_de_credito_a => { tipo_afip: 3  },
+          :nota_de_credito_b => { tipo_afip: 8  },
+          :nota_de_credito_c => { tipo_afip: 13 },
         }
       end
     end
@@ -42,7 +42,6 @@ module ComprasVentas
 
     def lineas_alicuotas
       lines = []
-
       # Sólo tienen alicuotas los comprobantes tipo A
       return lines unless [:factura_a, :nota_de_credito_a].include?(tipo_cbte)
       
@@ -77,6 +76,19 @@ module ComprasVentas
         }]
       end
       alicuotas
+    end
+
+    def total
+      (no_gravado || 0) +
+      (exento || 0) +
+      (gravado_21 || 0) +
+      (gravado_105 || 0) +
+      (gravado_27 || 0) +
+      (gravado_5 || 0) +
+      (gravado_21 || 0) * 0.21 +
+      (gravado_105 || 0) * 0.105 +
+      (gravado_27 || 0) * 0.27 +
+      (gravado_5 || 0) * 0.05
     end
   end
 end
