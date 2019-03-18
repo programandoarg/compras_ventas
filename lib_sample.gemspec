@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "A simple hello world gem"
   s.authors     = ["Martín Rosso"]
   s.email       = 'mrosso10@gmail.com'
-  s.files       = ["lib/lib_sample.rb"]
+  s.files       = ["lib/lib_sample.rb", "lib/lib_sample/saludador.rb"]
   s.homepage    =
     'http://rubygems.org/gems/lib_sample'
   s.license       = 'MIT'
