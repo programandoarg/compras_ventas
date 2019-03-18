@@ -7,6 +7,8 @@ module ComprasVentas
     # gravado_27
     # exento
     # no_gravado
+    # iibb_ba
+    # gas_oil
 
     def campos_comprobante
       [

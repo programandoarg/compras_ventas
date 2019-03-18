@@ -153,9 +153,9 @@ module ComprasVentas
     #   npad(@comprobante.total, 15)
     # end
 
-    def fe_imp_tot_conc
-      npad(@comprobante.fe_imp_tot_conc, 15)
-    end
+    # def fe_imp_tot_conc
+    #   npad(@comprobante.fe_imp_tot_conc, 15)
+    # end
 
     def perc_a_no_categorizados
       npad(0, 15)
@@ -169,17 +169,17 @@ module ComprasVentas
       npad(0, 15)
     end
 
-    def ingresos_brutos
-      npad(0, 15)
-    end
+    # def ingresos_brutos
+    #   npad(0, 15)
+    # end
 
     def impuestos_municipales
       npad(0, 15)
     end
 
-    def impuestos_internos
-      npad(0, 15)
-    end
+    # def impuestos_internos
+    #   npad(0, 15)
+    # end
 
     # def cant_alicuotas
     #   count = @comprobante.alicuotas.count

@@ -24,6 +24,12 @@ module ComprasVentas
       end
     end
 
+    def initialize(params = {})
+      super(params)
+      self.moneda_cotizacion = 1 if self.moneda_cotizacion.nil?
+      self.moneda = :pesos if self.moneda.nil?
+    end
+
     def lineas(tipo)
       if tipo == :alicuotas
         lineas_alicuotas
