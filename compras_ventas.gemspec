@@ -11,5 +11,8 @@ Gem::Specification.new do |s|
     'http://rubygems.org/gems/compras_ventas'
   s.license       = 'MIT'
 
+  s.add_dependency "actionview"
+  s.add_dependency "ascii"
   s.add_development_dependency "rspec"
+  s.add_development_dependency "factory_bot"
 end
