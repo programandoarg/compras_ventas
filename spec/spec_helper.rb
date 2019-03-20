@@ -15,6 +15,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'compras_ventas'
 require 'factory_bot'
+require 'faker'
 require 'pry-byebug'
 
 RSpec.configure do |config|

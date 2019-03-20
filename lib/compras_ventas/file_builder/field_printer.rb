@@ -1,13 +1,16 @@
-module ComprasVentas
+module ComprasVentas::FileBuilder
   class FieldPrinter
-    include Utilidades
+    include ActionView::Helpers::NumberHelper
 
     def initialize(comprobante, alicuota = nil)
       @comprobante = comprobante
       @alicuota = alicuota
     end
 
-    def field(field)
+    def print(field)
+      unless @comprobante.valid?
+        raise "Comprobante no válido: #{@comprobante.errors.full_messages}"
+      end
       send(field)
     end
 
@@ -25,12 +28,20 @@ module ComprasVentas
       pad(@comprobante.numero.to_s, 20)
     end
 
-    def doc_tipo
-      pad(@comprobante.doc_tipo || inferir_doc_tipo, 2)
+    def emisor_doc_tipo
+      pad(@comprobante.emisor_doc_tipo, 2)
     end
 
-    def doc_nro
-      pad(@comprobante.doc_nro || 99999999999, 20)
+    def emisor_doc_nro
+      pad(@comprobante.emisor_doc_nro, 20)
+    end
+
+    def receptor_doc_tipo
+      pad(@comprobante.receptor_doc_tipo, 2)
+    end
+
+    def receptor_doc_nro
+      pad(@comprobante.receptor_doc_nro, 20)
     end
 
     def moneda
@@ -57,22 +68,26 @@ module ComprasVentas
       npad(@alicuota[:importe], 15)
     end
 
-    def tipo_alicuota
-      npad(@alicuota[:tipo_alicuota], 15)
+    def codigo_alicuota_afip
+      pad(@alicuota[:codigo_alicuota_afip], 4)
     end
 
     # Compras
 
     def tipo_cbte
-      pad(Comprobante.detalle_tipos[@comprobante.tipo_cbte][:tipo_afip], 3)
+      pad(ComprasVentas::TipoCbte.hash[@comprobante.tipo_cbte][:codigo_cbte_afip], 3)
     end
 
     def despacho_importacion
       '                '
     end
 
-    def nombre_o_razon_social
-      lpad(Ascii.process(@comprobante.nombre_o_razon_social), 30).upcase
+    def receptor_razon_social
+      lpad(::Ascii.process(@comprobante.receptor_razon_social), 30).upcase
+    end
+
+    def emisor_razon_social
+      lpad(::Ascii.process(@comprobante.emisor_razon_social), 30).upcase
     end
 
     def total
@@ -108,11 +123,11 @@ module ComprasVentas
     end
 
     def cant_alicuotas
-      @comprobante.alicuotas.count.to_s
+      ComprasVentas::Alicuotas.get(@comprobante).count.to_s
     end
 
     def cod_operacion
-      # count = @comprobante.alicuotas.count
+      # count = Alicuotas.get(@comprobante).count
       return '0' if calcular_credito_fiscal > 0
       return 'E' if (@comprobante.exento || 0) > 0
       return 'N' if (@comprobante.no_gravado || 0) > 0
@@ -146,7 +161,7 @@ module ComprasVentas
     # end
 
     # def nombre_o_razon_social
-    #   lpad(Ascii.process(@comprobante.nombre_o_razon_social), 30).upcase
+    #   lpad(::Ascii.process(@comprobante.nombre_o_razon_social), 30).upcase
     # end
 
     # def total
@@ -182,7 +197,7 @@ module ComprasVentas
     # end
 
     # def cant_alicuotas
-    #   count = @comprobante.alicuotas.count
+    #   count = Alicuotas.get(@comprobante).count
     #   return '1' unless count > 0
     #   count.to_s
     # end
@@ -201,8 +216,28 @@ module ComprasVentas
       end
 
       def inferir_doc_tipo
-        return 99 if @comprobante.doc_nro.blank?
+        return 99 if @comprobante.receptor_doc_nro.blank?
         raise 'doc_tipo no puede estar en blanco'
+      end
+
+      def lpad(value, length)
+        value.to_s.truncate(length, omission: '').gsub(/\t/, ' ').ljust(length)
+      end
+
+      def pad(value, length)
+        value.to_s.rjust(length, '0')
+      end
+
+      def npad(value, length, precision = 2)
+        pad(number_with_precision(value, delimiter: "", separator: "", precision: precision), length)
+      end
+
+      # def cnpad(value, length)
+      #   pad(number_with_precision(value, delimiter: "", separator: ",", precision: 2), length)
+      # end
+
+      def space(number = 1)
+        ' ' * number
       end
   end
 end

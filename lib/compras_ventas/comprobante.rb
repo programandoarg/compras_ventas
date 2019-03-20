@@ -1,92 +1,42 @@
 module ComprasVentas
-  class Comprobante < OpenStruct
-    include Utilidades
+  class Comprobante
+    include ActiveModel::Validations
 
-    class << self
-      def detalle_alicuotas
-        [
-          { field: 'gravado_21', desc: 'Neto Gravado 21%', tipo_iva: 5, perc_iva: 21 },
-          { field: 'gravado_105', desc: 'Neto Gravado 10.5%', tipo_iva: 4, perc_iva: 10.5 },
-          { field: 'gravado_5', desc: 'Neto Gravado 5%', tipo_iva: 8, perc_iva: 5 },
-          { field: 'gravado_27', desc: 'Neto Gravado 27%', tipo_iva: 6, perc_iva: 27 },
-        ]
-      end
+    attr_accessor :fecha, :tipo_cbte, :punto_de_venta, :numero,
+      :emisor_doc_tipo, :emisor_doc_nro, :emisor_razon_social,
+      :receptor_doc_tipo, :receptor_doc_nro, :receptor_razon_social,
+      :gravado_21, :gravado_105, :gravado_5, :gravado_27, :gravado_25, :gravado_0, :exento, :no_gravado, :iibb_ba, :gas_oil, :iva_15, :iva_3,
+      :moneda, :moneda_cotizacion
 
-      def detalle_tipos
-        {
-          :factura_a => { tipo_afip: 1 },
-          :factura_b => { tipo_afip: 6 },
-          :factura_c => { tipo_afip: 11 },
-          :nota_de_credito_a => { tipo_afip: 3  },
-          :nota_de_credito_b => { tipo_afip: 8  },
-          :nota_de_credito_c => { tipo_afip: 13 },
-        }
-      end
+    # :emisor_iibb, :emisor_inicio_actividades, :emisor_condicion_iva, :condicion_venta, :concepto,  :receptor_condicion_iva,
+    # :fecha_servicio_desde, :fecha_servicio_hasta, :fecha_vencimiento_pago, :cae, :vencimiento_cae,
+
+    validates :fecha, :tipo_cbte, :punto_de_venta, :numero, :emisor_doc_tipo, :emisor_doc_nro,
+      :emisor_razon_social, :receptor_doc_tipo, :receptor_doc_nro, :receptor_razon_social, presence: true
+
+    validates :tipo_cbte, inclusion: TipoCbte.all
+    validates :moneda, inclusion: [:pesos, :dolares]
+    validate :total_mayor_a_cero
+
+    def total_mayor_a_cero
+      return if total > 0
+      errors.add(:total, 'debe ser mayor a cero')
     end
 
-    def initialize(params = {})
-      super(params)
-      self.moneda_cotizacion = 1 if self.moneda_cotizacion.nil?
-      self.moneda = :pesos if self.moneda.nil?
-    end
-
-    def lineas(tipo)
-      if tipo == :alicuotas
-        lineas_alicuotas
-      elsif tipo == :comprobantes
-        [linea_comprobantes]
-      end
-    end
-
-    def linea_comprobantes
-      output = ''
-      campos_comprobante.each do |campo|
-        output << FieldPrinter.new(self, alicuota).field(campo)
-      end
-      output
-    end
-
-    def lineas_alicuotas
-      lines = []
-      # Sólo tienen alicuotas los comprobantes tipo A
-      return lines unless [:factura_a, :nota_de_credito_a].include?(tipo_cbte)
-      
-      alicuotas.each do |alicuota|
-        output = ''
-        campos_alicuotas.each do |campo|
-          output << FieldPrinter.new(self, alicuota).field(campo)
-        end
-        lines << output
-      end
-      lines
-    end
-
-    def alicuotas
-      alicuotas = []
-      Compra.detalle_alicuotas.each do |detalle_alicuota|
-        if self[detalle_alicuota[:field]].present? && self[detalle_alicuota[:field]] > 0
-          alicuota = {
-            tipo_alicuota: detalle_alicuota[:tipo_iva],
-            base_imponible: self[detalle_alicuota[:field]],
-            importe: detalle_alicuota[:perc_iva] * 0.01 * self[detalle_alicuota[:field]],
-          }
-          alicuotas.push(alicuota)
-        end
-      end
-      if alicuotas.empty?
-        # Si no hay alicuotas le mando la de 0%
-        alicuotas = [{
-          tipo_alicuota: '3',
-          base_imponible: 0,
-          importe: 0,
-        }]
-      end
-      alicuotas
+    def initialize
+      self.moneda_cotizacion = 1
+      self.moneda = :pesos
+      self.receptor_doc_nro = 99999999999
+      self.receptor_doc_tipo = 99
     end
 
     def total
+      (iibb_ba || 0) +
+      (gas_oil || 0) +
       (no_gravado || 0) +
       (exento || 0) +
+      (iva_3 || 0) +
+      (iva_15 || 0) +
       (gravado_21 || 0) +
       (gravado_105 || 0) +
       (gravado_27 || 0) +
