@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency "actionview"
   s.add_dependency "activemodel"
   s.add_dependency "ascii"
+  s.add_dependency "spreadsheet"
   s.add_development_dependency "rspec"
   s.add_development_dependency "factory_bot"
   s.add_development_dependency "faker"
