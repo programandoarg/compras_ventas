@@ -1,5 +1,8 @@
 module ComprasVentas::FileBuilder
   class FieldPrinter
+    class ComprobanteInvalido < StandardError
+    end
+
     include ActionView::Helpers::NumberHelper
 
     def initialize(comprobante, alicuota = nil)
@@ -9,7 +12,7 @@ module ComprasVentas::FileBuilder
 
     def print(field)
       unless @comprobante.valid?
-        raise "Comprobante no válido: #{@comprobante.errors.full_messages}"
+        raise ComprobanteInvalido.new(@comprobante.errors.full_messages.join(', '))
       end
       send(field)
     end
