@@ -16,8 +16,7 @@ FactoryBot.define do
     no_gravado { rand(1..20000) }
     iibb_ba { rand(1..20000) }
     gas_oil { rand(1..20000) }
-    iva_15 { rand(1..20000) }
-    iva_3 { rand(1..20000) }
+    percepcion_iva { rand(1..20000) }
     trait :tipo_a do
       tipo_cbte { ComprasVentas::TipoCbte.tipos_a.sample }
     end
@@ -30,8 +29,7 @@ FactoryBot.define do
       no_gravado { 0 }
       iibb_ba { 0 }
       gas_oil { 0 }
-      iva_15 { 0 }
-      iva_3 { 0 }
+      percepcion_iva { 0 }
     end
   end
 end

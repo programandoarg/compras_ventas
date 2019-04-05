@@ -106,7 +106,7 @@ module ComprasVentas::FileBuilder
     end
 
     def percepciones_iva
-      npad((@comprobante.iva_15 || 0) + (@comprobante.iva_3 || 0), 15)
+      npad((@comprobante.percepcion_iva || 0), 15)
     end
 
     def impuestos_nacionales

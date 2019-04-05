@@ -61,8 +61,7 @@ module ComprasVentas::FileBuilder
     end
 
     context 'percepciones_iva' do
-      it_behaves_like 'fields_cero', {iva_3: 10.26}, 'percepciones_iva', '000000000001026'
-      it_behaves_like 'fields_cero', {iva_3: 10.26, iva_15: 3.11}, 'percepciones_iva', '000000000001337'
+      it_behaves_like 'fields_cero', {percepcion_iva: 10.26}, 'percepciones_iva', '000000000001026'
     end
 
     context 'impuestos_nacionales' do

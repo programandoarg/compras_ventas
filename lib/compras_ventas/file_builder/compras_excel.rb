@@ -21,8 +21,7 @@ module ComprasVentas::FileBuilder
         { width: 13, name: 'Exento'},
         # { width: 13, name: 'Imp. Gas Oil'},
         { width: 13, name: 'IIBB'},
-        { width: 13, name: 'Perc. IVA 3%'},
-        { width: 13, name: 'Perc. IVA 1.5%'},
+        { width: 13, name: 'Percepciones IVA'},
         { width: 13, name: 'Total'},
       ]
     end
@@ -48,8 +47,7 @@ module ComprasVentas::FileBuilder
       row.push ((comprobante.exento || 0)).round(2)
       # row.push ((comprobante.gas_oil || 0)).round(2)
       row.push ((comprobante.iibb_ba || 0)).round(2)
-      row.push ((comprobante.iva_3 || 0)).round(2)
-      row.push ((comprobante.iva_15 || 0)).round(2)
+      row.push ((comprobante.percepcion_iva || 0)).round(2)
       row.push ((comprobante.total || 0)).round(2)
     end
 
@@ -68,8 +66,7 @@ module ComprasVentas::FileBuilder
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.exento || 0) }
       # row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gas_oil || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iibb_ba || 0) }
-      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iva_3 || 0) }
-      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iva_15 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.percepcion_iva || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.total || 0) }
 
       row.default_format = Spreadsheet::Format.new weight: :bold
