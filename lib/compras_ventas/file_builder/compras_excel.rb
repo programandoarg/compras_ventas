@@ -19,7 +19,7 @@ module ComprasVentas::FileBuilder
         { width: 13, name: 'IVA %27'},
         { width: 13, name: 'No gravado'},
         { width: 13, name: 'Exento'},
-        { width: 13, name: 'Imp. Gas Oil'},
+        # { width: 13, name: 'Imp. Gas Oil'},
         { width: 13, name: 'IIBB'},
         { width: 13, name: 'Perc. IVA 3%'},
         { width: 13, name: 'Perc. IVA 1.5%'},
@@ -46,7 +46,7 @@ module ComprasVentas::FileBuilder
       row.push ((comprobante.gravado_27 || 0) * 0.27).round(2)
       row.push ((comprobante.no_gravado || 0)).round(2)
       row.push ((comprobante.exento || 0)).round(2)
-      row.push ((comprobante.gas_oil || 0)).round(2)
+      # row.push ((comprobante.gas_oil || 0)).round(2)
       row.push ((comprobante.iibb_ba || 0)).round(2)
       row.push ((comprobante.iva_3 || 0)).round(2)
       row.push ((comprobante.iva_15 || 0)).round(2)
