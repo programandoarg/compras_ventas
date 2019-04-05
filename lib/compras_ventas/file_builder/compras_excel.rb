@@ -53,37 +53,26 @@ module ComprasVentas::FileBuilder
       row.push ((comprobante.total || 0)).round(2)
     end
 
+    def set_totales(row)
+      row.push 'TOTAL'
+      6.times.each { row.push '' }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_21 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_21 || 0) * 0.21).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_105 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_105 || 0) * 0.105).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_5 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_5 || 0) * 0.05).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_27 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_27 || 0) * 0.27).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.no_gravado || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.exento || 0) }
+      # row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gas_oil || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iibb_ba || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iva_3 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iva_15 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.total || 0) }
 
-    # def set_totales(row)
-    #   row.push 'TOTAL'
-    #   6.times.each { row.push '' }
-    #   multiplicador = "CASE WHEN ARRAY[tipo_cbte] <@ ARRAY[0, 1, 2] THEN 1 ELSE -1 END"
-    #   row.push comprobantes.sum("#{multiplicador} * gravado_21")
-    #   row.push comprobantes.sum("#{multiplicador} * round(gravado_21 * 0.21, 2)")
-    #   row.push comprobantes.sum("#{multiplicador} * gravado_105")
-    #   row.push comprobantes.sum("#{multiplicador} * round(gravado_105 * 0.105, 2)")
-    #   row.push comprobantes.sum("#{multiplicador} * gravado_5")
-    #   row.push comprobantes.sum("#{multiplicador} * round(gravado_5 * 0.05, 2)")
-    #   row.push comprobantes.sum("#{multiplicador} * gravado_27")
-    #   row.push comprobantes.sum("#{multiplicador} * round(gravado_27 * 0.27, 2)")
-    #   row.push comprobantes.sum("#{multiplicador} * no_gravado")
-    #   row.push comprobantes.sum("#{multiplicador} * exento")
-    #   row.push comprobantes.sum("#{multiplicador} * gas_oil")
-    #   row.push comprobantes.sum("#{multiplicador} * iibb_ba")
-    #   row.push comprobantes.sum("#{multiplicador} * iva_3")
-    #   row.push comprobantes.sum("#{multiplicador} * iva_15")
-    #   row.push comprobantes.sum("#{multiplicador} * round(gravado_21 + gravado_21 * 0.21 + gravado_105 + gravado_105 * 0.105 + gravado_5 + gravado_5 * 0.05 + gravado_27 + gravado_27 * 0.27 + no_gravado + exento + gas_oil + iibb_ba + iva_3 + iva_15, 2)")
-
-    #   # row.push comprobantes.joins(:items).where('items.tipo_iva = 7').sum("(importe * cantidad) * CASE WHEN ARRAY[type::text] <@ ARRAY['Factura_A', 'Factura_B', 'Presupuesto'] THEN 1 ELSE -1 END")
-    #   # row.push comprobantes.joins(:items).where('items.tipo_iva IN (0,1,2,3,4,5)').sum("(importe * cantidad) * CASE WHEN ARRAY[type::text] <@ ARRAY['Factura_A', 'Factura_B', 'Presupuesto'] THEN 1 ELSE -1 END")
-    #   # row.push ''
-    #   # row.push ''
-    #   # row.push comprobantes.joins(:items).where('items.tipo_iva IN (0,1,2,3,4,5)').sum("round(cantidad * importe * 0.01 * perc_iva, 2) * CASE WHEN ARRAY[type::text] <@ ARRAY['Factura_A', 'Factura_B', 'Presupuesto'] THEN 1 ELSE -1 END")
-    #   # row.push comprobantes.joins(:items).sum("round(cantidad * importe * (1 + 0.01 * perc_iva), 2) * CASE WHEN ARRAY[type::text] <@ ARRAY['Factura_A', 'Factura_B', 'Presupuesto'] THEN 1 ELSE -1 END")
-
-    #   # # columns.each do |column|
-    #   # # end
-    #   row.default_format = Spreadsheet::Format.new weight: :bold
-    # end
+      row.default_format = Spreadsheet::Format.new weight: :bold
+    end
   end
 end

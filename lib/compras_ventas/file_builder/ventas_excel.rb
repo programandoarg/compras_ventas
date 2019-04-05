@@ -47,21 +47,22 @@ module ComprasVentas::FileBuilder
       row.push ((comprobante.total || 0)).round(2)
     end
 
-    # def set_totales(row)
-    #   row.push 'TOTAL'
-    #   8.times.each { row.push '' }
-    #   multiplicador = "CASE WHEN ARRAY[type::text] <@ ARRAY['Factura_A', 'Factura_B', 'Presupuesto'] THEN 1 ELSE -1 END"
-    #   row.push comprobantes.joins(:items).where('items.tipo_iva = 6').sum("(importe * cantidad) * #{multiplicador}")
-    #   row.push comprobantes.joins(:items).where('items.tipo_iva = 7').sum("(importe * cantidad) * #{multiplicador}")
-    #   row.push comprobantes.joins(:items).where('items.tipo_iva IN (0,1,2,3,4,5)').sum("(importe * cantidad) * #{multiplicador}")
-    #   row.push ''
-    #   row.push ''
-    #   row.push comprobantes.joins(:items).where('items.tipo_iva IN (0,1,2,3,4,5)').sum("round(cantidad * importe * 0.01 * perc_iva, 2) * #{multiplicador}")
-    #   row.push comprobantes.joins(:items).sum("round(cantidad * importe * (1 + 0.01 * perc_iva), 2) * #{multiplicador}")
+    def set_totales(row)
+      row.push 'TOTAL'
+      6.times.each { row.push '' }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_21 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_21 || 0) * 0.21).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_105 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_105 || 0) * 0.105).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_5 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_5 || 0) * 0.05).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_27 || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_27 || 0) * 0.27).round(2) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.no_gravado || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.exento || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.total || 0) }
 
-    #   # columns.each do |column|
-    #   # end
-    #   row.default_format = Spreadsheet::Format.new weight: :bold
-    # end
+      row.default_format = Spreadsheet::Format.new weight: :bold
+    end
   end
 end

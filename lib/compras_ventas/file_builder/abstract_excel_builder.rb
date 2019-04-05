@@ -8,7 +8,7 @@ module ComprasVentas::FileBuilder
       @i = 1
       set_widths
       set_headers(sheet.row(0))
-      # set_totales(sheet.row(1))
+      set_totales(sheet.row(1))
       put_data_into_sheet
       file_contents = StringIO.new
       book.write file_contents
@@ -45,6 +45,14 @@ module ComprasVentas::FileBuilder
     def next_row
       @i += 1
       sheet.row(@i)
+    end
+
+    def multiplicador(cbte)
+      if [:factura_a, :factura_b, :factura_c].include?(cbte.tipo_cbte)
+        1
+      else
+        -1
+      end
     end
   end
 end
