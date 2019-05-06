@@ -2,7 +2,7 @@ module ComprasVentas
   class Comprobante
     include ActiveModel::Validations
 
-    attr_accessor :fecha, :tipo_cbte, :punto_de_venta, :numero,
+    attr_accessor :fuente, :fecha, :tipo_cbte, :punto_de_venta, :numero,
       :emisor_doc_tipo, :emisor_doc_nro, :emisor_razon_social,
       :receptor_doc_tipo, :receptor_doc_nro, :receptor_razon_social,
       :gravado_21, :gravado_105, :gravado_5, :gravado_27, :gravado_25, :gravado_0, :exento, :no_gravado, :iibb_ba, :gas_oil, :percepcion_iva,
@@ -16,18 +16,31 @@ module ComprasVentas
 
     validates :tipo_cbte, inclusion: TipoCbte.all
     validates :moneda, inclusion: [:pesos, :dolares]
+    validates :numero, :punto_de_venta, numericality: { greater_than: 0 }
+    validates :emisor_doc_nro, length: { is: 11 }, if: Proc.new { |a| a.emisor_doc_tipo == 80 }
+    validates :receptor_doc_nro, length: { is: 11 }, if: Proc.new { |a| a.receptor_doc_tipo == 80 }
     validate :total_mayor_a_cero
+    # validate :no_gravado_cero
 
     def total_mayor_a_cero
       return if total > 0
       errors.add(:total, 'debe ser mayor a cero')
     end
 
+    # def no_gravado_cero
+    #   return if es_tipo_a? || no_gravado == 0
+    #   errors.add(:base, 'para comprobantes B o C el Total No Gravado debe ser igual a cero')
+    # end
+
     def initialize
       self.moneda_cotizacion = 1
       self.moneda = :pesos
       self.receptor_doc_nro = 99999999999
       self.receptor_doc_tipo = 99
+    end
+
+    def es_tipo_a?
+      ComprasVentas::TipoCbte.tipos_a.include? tipo_cbte.to_sym
     end
 
     def total

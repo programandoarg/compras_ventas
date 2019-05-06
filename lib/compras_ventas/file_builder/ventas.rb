@@ -34,7 +34,7 @@ module ComprasVentas::FileBuilder
           :impuestos_internos,
           :moneda,
           :tipo_cambio,
-          :cant_alicuotas,
+          :cant_alicuotas_ventas,
           :cod_operacion,
           :otros_tributos,
           :fecha_venc_pago,

@@ -1,6 +1,12 @@
 module ComprasVentas::FileBuilder
   class FieldPrinter
     class ComprobanteInvalido < StandardError
+      attr_reader :comprobante
+
+      def initialize(comprobante)
+        @comprobante = comprobante
+        super(@comprobante.errors.full_messages.join(', '))
+      end
     end
 
     include ActionView::Helpers::NumberHelper
@@ -12,7 +18,7 @@ module ComprasVentas::FileBuilder
 
     def print(field)
       unless @comprobante.valid?
-        raise ComprobanteInvalido.new(@comprobante.errors.full_messages.join(', '))
+        raise ComprobanteInvalido.new(@comprobante)
       end
       send(field)
     end
@@ -125,8 +131,19 @@ module ComprasVentas::FileBuilder
       npad((@comprobante.gas_oil || 0), 15)
     end
 
-    def cant_alicuotas
+
+    def cant_alicuotas_ventas
       ComprasVentas::Alicuotas.get(@comprobante).count.to_s
+    end
+
+    def cant_alicuotas_compras
+      if @comprobante.es_tipo_a?
+        cantidad = ComprasVentas::Alicuotas.get(@comprobante).count
+        return '1' unless cantidad > 0
+        cantidad.to_s
+      else
+        '0'
+      end
     end
 
     def cod_operacion
