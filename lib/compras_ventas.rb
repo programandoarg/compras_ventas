@@ -1,6 +1,6 @@
 module ComprasVentas
   require 'ascii'
-  if defined?(Rails)
+  if false # defined?(Rails)     # Comento esto porque en rails 5 ya no funca, no se xq
     require 'compras_ventas/engine'
   else
     require 'action_view'
