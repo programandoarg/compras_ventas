@@ -9,6 +9,9 @@ module ComprasVentas
           nota_de_credito_a: { codigo_cbte_afip: 3  },
           nota_de_credito_b: { codigo_cbte_afip: 8  },
           nota_de_credito_c: { codigo_cbte_afip: 13 },
+          nota_de_debito_a: { codigo_cbte_afip: 2  },
+          nota_de_debito_b: { codigo_cbte_afip: 7  },
+          nota_de_debito_c: { codigo_cbte_afip: 12 },
         }
       end
 
@@ -17,7 +20,7 @@ module ComprasVentas
       end
 
       def tipos_a
-        [:factura_a, :nota_de_credito_a]
+        [:factura_a, :nota_de_credito_a, :nota_de_debito_a]
       end
     end
   end
