@@ -26,6 +26,7 @@ module ComprasVentas::FileBuilder
     end
 
     def put_comprobante_into_sheet(comprobante)
+      multip = multiplicador(comprobante)
       row = next_row
       row.push comprobante.fecha.strftime('%d/%m/%Y')
       row.push comprobante.tipo_cbte.to_s.titleize
@@ -34,17 +35,17 @@ module ComprasVentas::FileBuilder
       row.push comprobante.receptor_doc_tipo
       row.push comprobante.receptor_doc_nro
       row.push comprobante.receptor_razon_social
-      row.push ((comprobante.gravado_21 || 0)).round(2)
-      row.push ((comprobante.gravado_21 || 0) * 0.21).round(2)
-      row.push ((comprobante.gravado_105 || 0)).round(2)
-      row.push ((comprobante.gravado_105 || 0) * 0.105).round(2)
-      row.push ((comprobante.gravado_5 || 0)).round(2)
-      row.push ((comprobante.gravado_5 || 0) * 0.05).round(2)
-      row.push ((comprobante.gravado_27 || 0)).round(2)
-      row.push ((comprobante.gravado_27 || 0) * 0.27).round(2)
-      row.push ((comprobante.no_gravado || 0)).round(2)
-      row.push ((comprobante.exento || 0)).round(2)
-      row.push ((comprobante.total || 0)).round(2)
+      row.push multip * ((comprobante.gravado_21 || 0)).round(2)
+      row.push multip * ((comprobante.gravado_21 || 0) * 0.21).round(2)
+      row.push multip * ((comprobante.gravado_105 || 0)).round(2)
+      row.push multip * ((comprobante.gravado_105 || 0) * 0.105).round(2)
+      row.push multip * ((comprobante.gravado_5 || 0)).round(2)
+      row.push multip * ((comprobante.gravado_5 || 0) * 0.05).round(2)
+      row.push multip * ((comprobante.gravado_27 || 0)).round(2)
+      row.push multip * ((comprobante.gravado_27 || 0) * 0.27).round(2)
+      row.push multip * ((comprobante.no_gravado || 0)).round(2)
+      row.push multip * ((comprobante.exento || 0)).round(2)
+      row.push multip * ((comprobante.total || 0)).round(2)
     end
 
     def set_totales(row)
