@@ -12,6 +12,9 @@ module ComprasVentas
           nota_de_debito_a: { codigo_cbte_afip: 2  },
           nota_de_debito_b: { codigo_cbte_afip: 7  },
           nota_de_debito_c: { codigo_cbte_afip: 12 },
+          factura_e: { codigo_cbte_afip: 19 },
+          nota_de_debito_e: { codigo_cbte_afip: 20},
+          nota_de_credito_e: { codigo_cbte_afip: 21},
         }
       end
 

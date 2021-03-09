@@ -27,6 +27,9 @@ module ComprasVentas::FileBuilder
       it_behaves_like 'fields', { tipo_cbte: :factura_a }, 'tipo_cbte', '001'
       it_behaves_like 'fields', { tipo_cbte: :factura_b }, 'tipo_cbte', '006'
       it_behaves_like 'fields', { tipo_cbte: :nota_de_credito_c }, 'tipo_cbte', '013'
+      it_behaves_like 'fields', { tipo_cbte: :factura_e }, 'tipo_cbte', '019'
+      it_behaves_like 'fields', { tipo_cbte: :nota_de_debito_e }, 'tipo_cbte', '020'
+      it_behaves_like 'fields', { tipo_cbte: :nota_de_credito_e }, 'tipo_cbte', '021'
     end
 
     context 'punto_de_venta' do
