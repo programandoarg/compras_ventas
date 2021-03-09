@@ -4,7 +4,7 @@ FactoryBot.define do
     punto_de_venta { rand(1..20) }
     numero { rand(1..9999) }
     emisor_doc_tipo { 80 }
-    emisor_doc_nro { rand(1000000..99999999) }
+    emisor_doc_nro { rand(10000000000..90000000000) }
     emisor_razon_social { Faker::Lorem.sentence }
     receptor_razon_social { Faker::Lorem.sentence }
     tipo_cbte { ComprasVentas::TipoCbte.all.sample }

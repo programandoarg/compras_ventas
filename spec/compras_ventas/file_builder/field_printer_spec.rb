@@ -91,11 +91,11 @@ module ComprasVentas::FileBuilder
       it_behaves_like 'fields', {moneda_cotizacion: 15.1654}, 'tipo_cambio', '0015165400'
     end
 
-    context 'cant_alicuotas' do
-      it_behaves_like 'fields_cero', {gravado_21: 7}, 'cant_alicuotas', '1'
-      it_behaves_like 'fields_cero', {gravado_21: 7, gravado_105: 12}, 'cant_alicuotas', '2'
-      it_behaves_like 'fields_cero', {gravado_21: 7, gravado_105: 12, exento: 123, gravado_5: 2.12, no_gravado: 111}, 'cant_alicuotas', '3'
-      it_behaves_like 'fields_cero', {exento: 12}, 'cant_alicuotas', '1'
+    context 'cant_alicuotas_compras' do
+      it_behaves_like 'fields_cero', {gravado_21: 7}, 'cant_alicuotas_compras', '1'
+      it_behaves_like 'fields_cero', {gravado_21: 7, gravado_105: 12}, 'cant_alicuotas_compras', '2'
+      it_behaves_like 'fields_cero', {gravado_21: 7, gravado_105: 12, exento: 123, gravado_5: 2.12, no_gravado: 111}, 'cant_alicuotas_compras', '3'
+      it_behaves_like 'fields_cero', {exento: 12}, 'cant_alicuotas_compras', '1'
     end
 
     context 'cod_operacion' do
