@@ -48,11 +48,7 @@ module ComprasVentas::FileBuilder
     end
 
     def multiplicador(cbte)
-      if [:factura_a, :factura_b, :factura_c].include?(cbte.tipo_cbte)
-        1
-      else
-        -1
-      end
+      ComprasVentas::TipoCbte.multiplicador(cbte.tipo_cbte)
     end
   end
 end
