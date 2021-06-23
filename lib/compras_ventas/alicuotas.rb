@@ -12,11 +12,19 @@ module ComprasVentas
         ]
       end
 
-      def get(comprobante)
-        alicuotas = []
+      def get_ventas(comprobante)
+        get(comprobante, :ventas)
+      end
 
-        # Sólo tienen alicuotas los comprobantes tipo A
-        # return alicuotas unless [:factura_a, :nota_de_credito_a].include?(comprobante.tipo_cbte)
+      def get_compras(comprobante)
+        get(comprobante, :compras)
+      end
+
+      def get(comprobante, tipo)
+        # Si es compras y no es A, entonces no tiene alicuotas
+        return [] if tipo == :compras && !comprobante.es_tipo_a?
+
+        alicuotas = []
 
         detalle_alicuotas.each do |detalle_alicuota|
           valor = comprobante.send(detalle_alicuota[:field])
@@ -29,7 +37,8 @@ module ComprasVentas
             alicuotas.push(alicuota)
           end
         end
-        if alicuotas.empty?
+        # Creo que en VENTAS si o si tiene que haber alicuota aunque sea en cero
+        if tipo == :ventas && alicuotas.empty?
           # Si no hay alicuotas le mando la de 0%
           # TODO: chequear si esto es necesario, creo que si pero no estoy seguro
           alicuotas = [{

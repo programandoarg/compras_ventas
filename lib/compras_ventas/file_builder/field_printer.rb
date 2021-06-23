@@ -133,21 +133,21 @@ module ComprasVentas::FileBuilder
 
 
     def cant_alicuotas_ventas
-      ComprasVentas::Alicuotas.get(@comprobante).count.to_s
+      ComprasVentas::Alicuotas.get_ventas(@comprobante).count.to_s
     end
 
     def cant_alicuotas_compras
-      if @comprobante.es_tipo_a?
-        cantidad = ComprasVentas::Alicuotas.get(@comprobante).count
-        return '1' unless cantidad > 0
-        cantidad.to_s
-      else
-        '0'
-      end
+      ComprasVentas::Alicuotas.get_compras(@comprobante).count.to_s
+      # if @comprobante.es_tipo_a?
+      #   cantidad = ComprasVentas::Alicuotas.get(@comprobante).count
+      #   return '1' unless cantidad > 0
+      #   cantidad.to_s
+      # else
+      #   '0'
+      # end
     end
 
     def cod_operacion
-      # count = Alicuotas.get(@comprobante).count
       return '0' if calcular_credito_fiscal > 0
       return 'E' if (@comprobante.exento || 0) > 0
       return 'N' if (@comprobante.no_gravado || 0) > 0
@@ -214,12 +214,6 @@ module ComprasVentas::FileBuilder
 
     # def impuestos_internos
     #   npad(0, 15)
-    # end
-
-    # def cant_alicuotas
-    #   count = Alicuotas.get(@comprobante).count
-    #   return '1' unless count > 0
-    #   count.to_s
     # end
 
     def otros_tributos

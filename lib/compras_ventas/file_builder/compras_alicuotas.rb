@@ -1,7 +1,7 @@
 module ComprasVentas::FileBuilder
   class ComprasAlicuotas < AbstractFileBuilder
     def lineas(comprobante)
-      ComprasVentas::Alicuotas.get(comprobante).map { |alicuota| linea(comprobante, alicuota) }
+      ComprasVentas::Alicuotas.get_compras(comprobante).map { |alicuota| linea(comprobante, alicuota) }
     end
 
     def linea(comprobante, alicuota)
