@@ -223,10 +223,10 @@ module ComprasVentas::FileBuilder
     private
 
       def calcular_credito_fiscal
-        (@comprobante.gravado_21 || 0) * 0.21 +
-        (@comprobante.gravado_105 || 0) * 0.105 +
-        (@comprobante.gravado_5 || 0) * 0.05 +
-        (@comprobante.gravado_27 || 0) * 0.27
+        ((@comprobante.gravado_21 || 0) * 0.21).round(2) +
+        ((@comprobante.gravado_105 || 0) * 0.105).round(2) +
+        ((@comprobante.gravado_5 || 0) * 0.05).round(2) +
+        ((@comprobante.gravado_27 || 0) * 0.27).round(2)
       end
 
       def inferir_doc_tipo
