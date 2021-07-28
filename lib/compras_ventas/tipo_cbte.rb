@@ -19,7 +19,9 @@ module ComprasVentas
       end
 
       def multiplicador(tipo_cbte)
-        if [:factura_a, :factura_b, :factura_c, :factura_e].include?(tipo_cbte)
+        if [:factura_a, :factura_b, :factura_c, :factura_e, :nota_de_debito_a,
+            :nota_de_debito_b, :nota_de_debito_c,
+            :nota_de_debito_e].include?(tipo_cbte)
           1
         else
           -1
