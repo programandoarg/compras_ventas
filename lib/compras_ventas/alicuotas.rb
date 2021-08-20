@@ -32,7 +32,7 @@ module ComprasVentas
             alicuota = {
               codigo_alicuota_afip: detalle_alicuota[:codigo_alicuota_afip],
               base_imponible: valor,
-              importe: detalle_alicuota[:perc_iva] * 0.01 * valor,
+              importe: (detalle_alicuota[:perc_iva] * 0.01 * valor).round(2),
             }
             alicuotas.push(alicuota)
           end
