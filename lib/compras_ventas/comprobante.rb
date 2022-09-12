@@ -3,7 +3,7 @@ module ComprasVentas
     include ActiveModel::Validations
 
     attr_accessor :fuente, :fecha, :tipo_cbte, :punto_de_venta, :numero,
-      :emisor_doc_tipo, :emisor_doc_nro, :emisor_razon_social,
+      :emisor_doc_tipo, :emisor_doc_nro, :emisor_razon_social, :detalles,
       :receptor_doc_tipo, :receptor_doc_nro, :receptor_razon_social,
       :gravado_21, :gravado_105, :gravado_5, :gravado_27, :gravado_25, :gravado_0, :exento, :no_gravado, :iibb_ba, :gas_oil, :percepcion_iva,
       :moneda, :moneda_cotizacion

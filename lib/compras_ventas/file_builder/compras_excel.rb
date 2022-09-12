@@ -9,6 +9,7 @@ module ComprasVentas::FileBuilder
         { width: 9, name: 'Doc. Tipo'},
         { width: 15, name: 'Doc. Número'},
         { width: 40, name: 'Proveedor'},
+        { width: 40, name: 'Descripción'},
         { width: 13, name: 'Gravado %21'},
         { width: 13, name: 'IVA %21'},
         { width: 13, name: 'Gravado %10.5'},
@@ -36,6 +37,7 @@ module ComprasVentas::FileBuilder
       row.push comprobante.emisor_doc_tipo
       row.push comprobante.emisor_doc_nro
       row.push comprobante.emisor_razon_social
+      row.push comprobante.detalles
       row.push multip * ((comprobante.gravado_21 || 0)).round(2)
       row.push multip * ((comprobante.gravado_21 || 0) * 0.21).round(2)
       row.push multip * ((comprobante.gravado_105 || 0)).round(2)
@@ -54,7 +56,7 @@ module ComprasVentas::FileBuilder
 
     def set_totales(row)
       row.push 'TOTAL'
-      6.times.each { row.push '' }
+      7.times.each { row.push '' }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_21 || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_21 || 0) * 0.21).round(2) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_105 || 0) }
