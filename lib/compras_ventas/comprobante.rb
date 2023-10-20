@@ -5,7 +5,18 @@ module ComprasVentas
     attr_accessor :fuente, :fecha, :tipo_cbte, :punto_de_venta, :numero,
       :emisor_doc_tipo, :emisor_doc_nro, :emisor_razon_social, :detalles,
       :receptor_doc_tipo, :receptor_doc_nro, :receptor_razon_social,
-      :gravado_21, :gravado_105, :gravado_5, :gravado_27, :gravado_25, :gravado_0, :exento, :no_gravado, :iibb_ba, :gas_oil, :percepcion_iva,
+      :gravado_21,
+      :gravado_105,
+      :gravado_5,
+      :gravado_27,
+      :gravado_25,
+      :gravado_0,
+      :exento,
+      :no_gravado,
+      :iibb_ba,
+      :gas_oil,
+      :percepcion_iva,
+      :otros_impuestos,
       :moneda, :moneda_cotizacion
 
     # :emisor_iibb, :emisor_inicio_actividades, :emisor_condicion_iva, :condicion_venta, :concepto,  :receptor_condicion_iva,
@@ -49,6 +60,7 @@ module ComprasVentas
       (no_gravado || 0) +
       (exento || 0) +
       (percepcion_iva || 0) +
+      (otros_impuestos || 0) +
       (gravado_21 || 0) +
       (gravado_105 || 0) +
       (gravado_27 || 0) +

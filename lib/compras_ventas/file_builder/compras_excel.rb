@@ -14,8 +14,8 @@ module ComprasVentas::FileBuilder
         { width: 13, name: 'IVA %21'},
         { width: 13, name: 'Gravado %10.5'},
         { width: 13, name: 'IVA %10.5'},
-        { width: 13, name: 'Gravado %5'},
-        { width: 13, name: 'IVA %5'},
+        # { width: 13, name: 'Gravado %5'},
+        # { width: 13, name: 'IVA %5'},
         { width: 13, name: 'Gravado %27'},
         { width: 13, name: 'IVA %27'},
         { width: 13, name: 'No gravado'},
@@ -23,6 +23,7 @@ module ComprasVentas::FileBuilder
         # { width: 13, name: 'Imp. Gas Oil'},
         { width: 13, name: 'IIBB'},
         { width: 13, name: 'Percepciones IVA'},
+        { width: 13, name: 'Otros impuestos'},
         { width: 13, name: 'Total'},
       ]
     end
@@ -42,8 +43,8 @@ module ComprasVentas::FileBuilder
       row.push multip * ((comprobante.gravado_21 || 0) * 0.21).round(2)
       row.push multip * ((comprobante.gravado_105 || 0)).round(2)
       row.push multip * ((comprobante.gravado_105 || 0) * 0.105).round(2)
-      row.push multip * ((comprobante.gravado_5 || 0)).round(2)
-      row.push multip * ((comprobante.gravado_5 || 0) * 0.05).round(2)
+      # row.push multip * ((comprobante.gravado_5 || 0)).round(2)
+      # row.push multip * ((comprobante.gravado_5 || 0) * 0.05).round(2)
       row.push multip * ((comprobante.gravado_27 || 0)).round(2)
       row.push multip * ((comprobante.gravado_27 || 0) * 0.27).round(2)
       row.push multip * ((comprobante.no_gravado || 0)).round(2)
@@ -51,6 +52,7 @@ module ComprasVentas::FileBuilder
       # row.push multip * ((comprobante.gas_oil || 0)).round(2)
       row.push multip * ((comprobante.iibb_ba || 0)).round(2)
       row.push multip * ((comprobante.percepcion_iva || 0)).round(2)
+      row.push multip * ((comprobante.otros_impuestos || 0)).round(2)
       row.push multip * ((comprobante.total || 0)).round(2)
     end
 

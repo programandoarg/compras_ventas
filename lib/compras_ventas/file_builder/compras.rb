@@ -25,13 +25,13 @@ module ComprasVentas::FileBuilder
           :emisor_doc_nro,
           :emisor_razon_social,
           :total,
-          :fe_imp_tot_conc,
-          :fe_imp_op_ex,
-          :percepciones_iva,
-          :impuestos_nacionales,
-          :ingresos_brutos,
-          :impuestos_municipales,
-          :impuestos_internos,
+          :fe_imp_tot_conc,           # no gravado
+          :fe_imp_op_ex,              # exento
+          :percepciones_iva,          # percepcion iva
+          :impuestos_nacionales,      # - 
+          :ingresos_brutos,           # iibb_ba
+          :impuestos_municipales,     # -
+          :impuestos_internos,        # gas_oil (no se usa)
           :moneda,
           :tipo_cambio,
           :cant_alicuotas_compras,
