@@ -63,8 +63,8 @@ module ComprasVentas::FileBuilder
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_21 || 0) * 0.21).round(2) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_105 || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_105 || 0) * 0.105).round(2) }
-      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_5 || 0) }
-      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_5 || 0) * 0.05).round(2) }
+      # row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_5 || 0) }
+      # row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_5 || 0) * 0.05).round(2) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gravado_27 || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * ((cbte.gravado_27 || 0) * 0.27).round(2) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.no_gravado || 0) }
@@ -72,6 +72,7 @@ module ComprasVentas::FileBuilder
       # row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.gas_oil || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iibb_ba || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.percepcion_iva || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.otros_impuestos || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.total || 0) }
 
       row.default_format = Spreadsheet::Format.new weight: :bold
