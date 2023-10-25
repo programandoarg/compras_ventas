@@ -53,7 +53,7 @@ module ComprasVentas::FileBuilder
       row.push multip * ((comprobante.iibb_ba || 0)).round(2)
       row.push multip * ((comprobante.percepcion_iva || 0)).round(2)
       row.push multip * ((comprobante.otros_impuestos || 0)).round(2)
-      row.push multip * ((comprobante.total || 0)).round(2)
+      row.push multip * ((comprobante.total_excel || 0)).round(2)
     end
 
     def set_totales(row)
@@ -73,7 +73,7 @@ module ComprasVentas::FileBuilder
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.iibb_ba || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.percepcion_iva || 0) }
       row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.otros_impuestos || 0) }
-      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.total || 0) }
+      row.push @comprobantes.inject(0) { |total, cbte| total + multiplicador(cbte) * (cbte.total_excel || 0) }
 
       row.default_format = Spreadsheet::Format.new weight: :bold
     end

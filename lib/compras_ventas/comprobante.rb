@@ -60,7 +60,6 @@ module ComprasVentas
       (no_gravado || 0) +
       (exento || 0) +
       (percepcion_iva || 0) +
-      (otros_impuestos || 0) +
       (gravado_21 || 0) +
       (gravado_105 || 0) +
       (gravado_27 || 0) +
@@ -69,6 +68,11 @@ module ComprasVentas
       (gravado_105 || 0) * 0.105 +
       (gravado_27 || 0) * 0.27 +
       (gravado_5 || 0) * 0.05
+    end
+
+    def total_excel
+      total +
+      (otros_impuestos || 0)
     end
   end
 end
