@@ -38,9 +38,9 @@ module ComprasVentas
           end
         end
         # Creo que en VENTAS si o si tiene que haber alicuota aunque sea en cero
-        if tipo == :ventas && alicuotas.empty?
+        # 2026-07-13: en COMPRAS también
+        if alicuotas.empty?
           # Si no hay alicuotas le mando la de 0%
-          # TODO: chequear si esto es necesario, creo que si pero no estoy seguro
           alicuotas = [{
             codigo_alicuota_afip: '3',
             base_imponible: 0,
